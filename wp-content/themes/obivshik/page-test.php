@@ -18,6 +18,7 @@ get_header();
     yoast_breadcrumb('<div class="container mt-3"><div id="breadcrumbs">','</div></div>');
 } ?>
     <link rel='stylesheet' id='obivshik-slick-css'  href='/wp-content/themes/obivshik/css/ourCalc.css' type='text/css' media='all' />
+    <script src="/wp-content/themes/obivshik/js/wow.min.js"></script>
     <script src="/wp-content/themes/obivshik/js/ourCalc.js"></script>
     <div id="primary" class="content-area">
         <main id="main" class="site-main">
@@ -25,24 +26,24 @@ get_header();
                 <div data-wow-duration="1s" data-wow-delay=".5s" class="wrapper-ourCalc wow rollIn" style="visibility: visible; animation-duration: 1s; animation-delay: 0.5s; animation-name: rollIn;">
                     <div class="black-bg">
                         <p class="title">Расчет стоимости</p>
-                        <div class="furChoose" style="display: none;">
+                        <div class="furChoose" style="display: block;">
                             <p class="choose">Выберите тип мебели</p>
                             <div data-wow-duration="1s" data-wow-delay="1s" class="red-line wow fadeInLeft" style="visibility: visible; animation-duration: 1s; animation-delay: 1s; animation-name: fadeInLeft;"></div>
                         </div>
-                        <ul class="ourCalc__nav" style="display: block;">
+                        <ul class="ourCalc__nav" style="display: none;">
                             <li class="ourCalc__navTab">Тип мебели</li>
                             <li class="ourCalc__navTab">Объем работы</li>
-                            <li class="ourCalc__navTab is-active">Материал</li>
+                            <li class="ourCalc__navTab">Материал</li>
                             <li class="ourCalc__navTab" onclick="recalcPrice();">Стоимость</li>
-                            <li class="ourCalc__navTab">Доставка</li>
+                            <li class="ourCalc__navTab is-active">Доставка</li>
                         </ul>
                         <form class="inputs" id="calc_form" method="post">
-                            <div class="ourCalc__1step js-calcStep" style="display: none;">
+                            <div class="ourCalc__1step js-calcStep" style="display: block;">
                                 <div data-wow-duration=".5s" data-wow-delay=".5s" class="wow fadeIn" style="visibility: visible; animation-duration: 0.5s; animation-delay: 0.5s; animation-name: fadeIn;">
                                     <input type="radio" name="calc-group-input" id="calc-1" value="sofa" class="calc-input">
                                     <label for="calc-1" class="calc-label">Диван
                                         <div class="img">
-                                            <img src="pict/ca-sofa.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-sofa.png">
                                         </div>
                                     </label>
                                 </div>
@@ -50,7 +51,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-2" value="bed_head" class="calc-input">
                                     <label for="calc-2" class="calc-label">Изголовье кровати
                                         <div class="img">
-                                            <img src="pict/ca-bed.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-bed.png">
                                         </div>
                                     </label>
                                 </div>
@@ -58,7 +59,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-3" value="armchair" class="calc-input">
                                     <label for="calc-3" class="calc-label">Кресло
                                         <div class="img">
-                                            <img src="pict/ca-arm.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-arm.png">
                                         </div>
                                     </label>
                                 </div>
@@ -66,7 +67,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-4" value="banket" class="calc-input">
                                     <label for="calc-4" class="calc-label">Банкетка
                                         <div class="img">
-                                            <img src="pict/ca-bank.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-bank.png">
                                         </div>
                                     </label>
                                 </div>
@@ -74,7 +75,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-5" value="chair" class="calc-input">
                                     <label for="calc-5" class="calc-label">Стул
                                         <div class="img">
-                                            <img src="pict/ca-chair.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-chair.png">
                                         </div>
                                     </label>
                                 </div>
@@ -82,7 +83,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-6" value="dental_chair" class="calc-input">
                                     <label for="calc-6" class="calc-label">Стоматологическое кресло
                                         <div class="img">
-                                            <img src="pict/ca-dent.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-dent.png">
                                         </div>
                                     </label>
                                 </div>
@@ -90,7 +91,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-7" value="kitchen" class="calc-input">
                                     <label for="calc-7" class="calc-label">Кухонный уголок
                                         <div class="img">
-                                            <img src="pict/ca-angle.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-angle.png">
                                         </div>
                                     </label>
                                 </div>
@@ -98,7 +99,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-8" value="officechair" class="calc-input">
                                     <label for="calc-8" class="calc-label">Офисное кресло
                                         <div class="img">
-                                            <img src="pict/ca-off.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-off.png">
                                         </div>
                                     </label>
                                 </div>
@@ -106,7 +107,7 @@ get_header();
                                     <input type="radio" name="calc-group-input" id="calc-9" value="puf" class="calc-input">
                                     <label for="calc-9" class="calc-label">Пуф
                                         <div class="img">
-                                            <img src="pict/ca-puf.png">
+                                            <img src="/wp-content/themes/obivshik/img/pict/ca-puf.png">
                                         </div>
                                     </label>
                                 </div>
@@ -220,7 +221,7 @@ get_header();
                                     <div class="step-next">Продолжить</div>
                                 </div>
                             </div>
-                            <div class="ourCalc__4step js-calcStep" style="display: block;">
+                            <div class="ourCalc__4step js-calcStep" style="display: none;">
                                 <div class="option">
                                     <p class="title">Ценовые категории:</p>
                                     <div class="item">
@@ -248,7 +249,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-1">
                                                     <p class="text">Отстрочка</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -257,7 +258,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-2">
                                                     <p class="text">Декоративный кант</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -266,7 +267,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-3">
                                                     <p class="text">Сборки</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -275,7 +276,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-4">
                                                     <p class="text">Каретная стяжка</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -284,7 +285,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-5">
                                                     <p class="text">Тесьма</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -293,7 +294,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-6">
                                                     <p class="text">Мебельные пуговицы</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -302,7 +303,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-7">
                                                     <p class="text">Утяжка</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -311,7 +312,7 @@ get_header();
                                             <div class="border">
                                                 <label for="calc-4step-2-8">
                                                     <p class="text"> Гвоздики</p>
-                                                    <img src="pict/step4-1.jpg" alt="">
+                                                    <img src="/wp-content/themes/obivshik/img/pict/step4-1.jpg" alt="">
                                                 </label>
                                             </div>
                                         </div>
@@ -430,4 +431,8 @@ get_header();
                     </div>
                 </div>
             </div>
-        </mai
+        </main><!-- #main -->
+    </div><!-- #primary -->
+
+<?php
+get_footer();
