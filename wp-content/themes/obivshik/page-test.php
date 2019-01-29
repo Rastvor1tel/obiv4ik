@@ -18,7 +18,6 @@ get_header();
     yoast_breadcrumb('<div class="container mt-3"><div id="breadcrumbs">','</div></div>');
 } ?>
     <link rel='stylesheet' id='obivshik-slick-css'  href='/wp-content/themes/obivshik/css/ourCalc.css' type='text/css' media='all' />
-    <script src="/wp-content/themes/obivshik/js/wow.min.js"></script>
     <script src="/wp-content/themes/obivshik/js/ourCalc.js"></script>
     <div id="primary" class="content-area">
         <main id="main" class="site-main">
@@ -163,7 +162,7 @@ get_header();
                                         <label for="calc-3step-1-1" class="square-label">Маленький </label>
                                     </div>
                                     <div class="item">
-                                        <input type="radio" checked="checked" name="calc-3step-1" id="calc-3step-1-2" value="size_m">
+                                        <input type="radio" name="calc-3step-1" id="calc-3step-1-2" value="size_m">
                                         <label for="calc-3step-1-2" class="square-label">Средний </label>
                                     </div>
                                     <div class="item">
@@ -327,17 +326,17 @@ get_header();
                                 <div class="top">
                                     <div class="column">
                                         <div class="title">Работа</div>
-                                        <div class="price" id="work_price">9000<span>руб.</span></div>
+                                        <div class="price" id="work_price">0<span>руб.</span></div>
                                     </div>
                                     <div class="line"></div>
                                     <div class="column">
                                         <div class="title">Материалы</div>
-                                        <div class="price" id="materials_price">15000<span>руб.</span></div>
+                                        <div class="price" id="materials_price">0<span>руб.</span></div>
                                     </div>
                                 </div>
                                 <div class="bottom">
                                     <div class="title">Итоговая сумма</div>
-                                    <div class="price" id="total_price">24000<span>руб.</span></div>
+                                    <div class="price" id="total_price">0<span>руб.</span></div>
                                 </div>
                                 <div class="step-buttons">
                                     <div class="step-prev">Назад</div>
@@ -349,11 +348,11 @@ get_header();
                                     <div class="option">
                                         <p class="title">Доставка</p>
                                         <div class="item">
-                                            <input type="radio" name="deliveryTab" id="deliveryTab-1" checked="checked" value="deliveryMoscow">
+                                            <input type="radio" name="deliveryTab" id="deliveryTab-1" checked="checked" value="deliveryMoscow" onchange="recalcPrice()">
                                             <label for="deliveryTab-1" class="square-label">Москва</label>
                                         </div>
                                         <div class="item">
-                                            <input type="radio" name="deliveryTab" id="deliveryTab-2" value="deliveryRegion">
+                                            <input type="radio" name="deliveryTab" id="deliveryTab-2" value="deliveryRegion" onchange="recalcPrice()">
                                             <label for="deliveryTab-2" class="square-label">Область </label>
                                         </div>
                                     </div>
@@ -425,7 +424,7 @@ get_header();
                             <div class="ourCalc__totalPrice" style="display: none;">
                                 <div class="text">Сумма является
                                     <b>ознакомительной</b>, она может отличаться при точных замерах, как в меньшую, так и в большую сторону</div>
-                                <a href="#order"><div class="order-btn">Заказать</div></a>
+                                <a href="#order"><div class="order-btn btn-max btn-info popmake-284 pum-trigger">Заказать</div></a>
                             </div>
                         </form>
                     </div>

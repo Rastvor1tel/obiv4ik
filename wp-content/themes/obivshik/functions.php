@@ -247,6 +247,43 @@ if( function_exists('acf_add_options_page') ) {
     acf_add_options_page();
     
 }
+
+add_action('wp_ajax_get_price', 'get_price_callback');
+add_action('wp_ajax_nopriv_get_price', 'get_price_callback');
+function get_price_callback(){
+    $calcArray = $_REQUEST;
+    $calcPost = get_page_by_path($calcArray['calc-group-input'], '', 'calculator');
+    $calcProps = get_post_meta($calcPost->ID);
+    $arPrice = [
+        'work' => 0,
+        'material' => 0,
+        'delivery' => 0
+    ];
+    foreach ($calcArray as $key => $calcItem) {
+        if ($key == 'calc-4step-2') {
+            foreach ($calcItem as $decorItem) {
+                if ($calcProps[$decorItem . '_work'])
+                    $arPrice['work'] += $calcProps[$decorItem . '_work'][0];
+                if ($calcProps[$decorItem . '_material'])
+                    $arPrice['material'] += $calcProps[$decorItem . '_material'][0];
+            }
+        } else {
+            if ($calcProps[$calcItem . '_work'])
+                $arPrice['work'] += $calcProps[$calcItem . '_work'][0];
+            if ($calcProps[$calcItem . '_material'])
+                $arPrice['material'] += $calcProps[$calcItem . '_material'][0];
+        }
+    }
+    $deliveryPost = get_page_by_path('delivery', '', 'calculator');
+    $deliveryProps = get_post_meta($deliveryPost->ID);
+    $arPrice['delivery'] += $deliveryProps[$calcArray['deliveryTab']][0];
+    if($calcArray['deliveryTab'] != 'deliveryMoscow')
+        $arPrice['delivery'] += $deliveryProps[$calcArray['deliverySelect']][0]*$calcArray['calcDistance'];
+    $arPrice['delivery'] += $deliveryProps[$calcArray['calcLift']][0]*$calcArray['calcFloor']*$calcArray['calcFurnitureCount'];
+    echo json_encode($arPrice);
+    wp_die();
+}
+
 //Добавление нового типа записей
 //functions.php
 add_action( 'init', 'tpl_tkani' );
@@ -261,6 +298,7 @@ function tpl_tkani() {
 		'supports' => array( 'title', 'thumbnail' ),
 		'taxonomies' => array('category'),
 		'has_archive' => true,
+		'query_var' => true,
 		)
 	);
 };
@@ -293,8 +331,13 @@ add_action('wp_ajax_myfilter', 'misha_filter_function'); // wp_ajax_{ACTION HERE
 add_action('wp_ajax_nopriv_myfilter', 'misha_filter_function');
  
 function misha_filter_function(){
+global $query;
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 	$args = array(
-		'post_type' => 'tkani'
+		'post_type' => 'tkani',
+		'posts_per_page' => 12,
+		'paged' => $paged,
+		'offset'=> 1
 	);
  
 	// for taxonomies / categories
@@ -313,7 +356,8 @@ function misha_filter_function(){
 				'taxonomy' => 'category',
 				'field' => 'id',
 				'terms' => 'all',
-				'relation'=>'AND'
+				'relation'=>'AND',
+				'paged' => get_query_var('paged') ?: 1
 			)
 		);		
 	}
@@ -339,7 +383,7 @@ if( isset( $_POST['dizayn_i_risunok'] )) {
 			'value'=> $_POST['dizayn_i_risunok'],			
 		) ;		     
 };
- 
+
 	$query = new WP_Query( $args );
 	if( $query->have_posts() ) :
 		while( $query->have_posts() ): $query->the_post();
@@ -351,13 +395,11 @@ if( isset( $_POST['dizayn_i_risunok'] )) {
 			echo '</div>';			
 			echo '</div>';
 		endwhile;
+if (function_exists('wp_corenavi')) wp_corenavi(); 
 		wp_reset_postdata();
-		if (function_exists('wp_corenavi')){
-			wp_corenavi();
-		};
 	else :
 		echo 'No posts found';
 	endif;
- 
+	
 	die();
 }
