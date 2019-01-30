@@ -4,6 +4,8 @@
     font-family: 'Arimo', sans-serif;
     overflow: hidden;
     font-size: 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
 }
 
 .ourCalc .wrapper-ourCalc {
