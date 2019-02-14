@@ -312,7 +312,7 @@ function show_calc(){
                                 </label>
                             </div>
                             <div data-wow-duration=".5s" data-wow-delay=".5s" class="wow fadeIn" style="visibility: visible; animation-duration: 0.5s; animation-delay: 0.5s; animation-name: fadeIn;">
-                                <input type="radio" name="calc-group-input" id="calc-6" value="dental_chair" class="calc-input">
+                                <input type="radio" name="calc-group-input" id="calc-6" value="dentalchair" class="calc-input">
                                 <label for="calc-6" class="calc-label">Стоматологическое кресло
                                     <div class="img">
                                         <img src="/wp-content/themes/obivshik/img/pict/ca-dent.png">
@@ -432,19 +432,19 @@ function show_calc(){
                                                 <label for="calc-3step-3-0" class="square-label">Не требуется</label>
                                             </div -->
                                 <div class="item-sm calc-option calc-1 calc-2 calc-3 calc-5 calc-6 calc-7 calc-8" style="display: inline-block;">
-                                    <input type="radio" name="calc-3step-4" id="calc-3step-3-1" value="fill_replace_back">
+                                    <input  type="checkbox" name="calc-3step-4" id="calc-3step-3-1" value="fill_replace_back">
                                     <label for="calc-3step-3-1" class="square-label">Спинка</label>
                                 </div>
                                 <div class="item-sm calc-option calc-1 calc-3 calc-6 calc-7 calc-8" style="display: inline-block;">
-                                    <input type="radio" name="calc-3step-4" id="calc-3step-3-2" value="fill_replace_hander">
+                                    <input type="checkbox" name="calc-3step-4" id="calc-3step-3-2" value="fill_replace_hander">
                                     <label for="calc-3step-3-2" class="square-label">Подлокотники</label>
                                 </div>
                                 <div class="item-sm calc-option calc-1 calc-3 calc-4 calc-5 calc-6 calc-7 calc-8 calc-9" style="display: inline-block;">
-                                    <input type="radio" name="calc-3step-4" id="calc-3step-3-3" value="fill_replace_chair">
+                                    <input type="checkbox" name="calc-3step-4" id="calc-3step-3-3" value="fill_replace_chair">
                                     <label for="calc-3step-3-3" class="square-label">Сиденье</label>
                                 </div>
                                 <div class="item-sm calc-option calc-1" style="display: none;">
-                                    <input type="radio" name="calc-3step-4" id="calc-3step-3-4" value="fill_replace_bed">
+                                    <input type="checkbox" name="calc-3step-4" id="calc-3step-3-4" value="fill_replace_bed">
                                     <label for="calc-3step-3-4" class="square-label">Спальное место</label>
                                 </div>
                             </div>
@@ -694,14 +694,26 @@ function get_price_callback(){
             if ($calcProps[$calcItem . '_material'])
                 $arPrice['material'] += $calcProps[$calcItem . '_material'][0];
         }
+        if ($key == 'calc-3step-4') {
+            foreach ($calcItem as $deItem) {
+                if ($calcProps[$deItem . '_work'])
+                    $arPrice['work'] += $calcProps[$deItem . '_work'][0];
+                if ($calcProps[$deItem . '_material'])
+                    $arPrice['material'] += $calcProps[$deItem . '_material'][0];
+            }
+        }
     }
     $deliveryPost = get_page_by_path('delivery', '', 'calculator');
     $deliveryProps = get_post_meta($deliveryPost->ID);
     $arPrice['delivery'] += $deliveryProps[$calcArray['deliveryTab']][0];
-    if($calcArray['deliveryTab'] != 'deliveryMoscow')
+    if($calcArray['deliveryTab'] != 'deliveryMoscow'){
         $arPrice['delivery'] += $deliveryProps[$calcArray['deliverySelect']][0]*$calcArray['calcDistance'];
-    $arPrice['delivery'] += $deliveryProps[$calcArray['calcLift']][0]*$calcArray['calcFloor']*$calcArray['calcFurnitureCount'];
-    echo json_encode($arPrice);
+		$arPrice['delivery'] += $deliveryProps[$calcArray['calcLift']][0]*$calcArray['calcFloor']*$calcArray['calcFurnitureCount'];
+	}else{
+        $arPrice['delivery'] += $deliveryProps[$calcArray['deliverySelect']][0]*1;
+		$arPrice['delivery'] += $deliveryProps[$calcArray['calcLift']][0]*$calcArray['calcFloor']*$calcArray['calcFurnitureCount'];		
+	}
+	echo json_encode($arPrice);
     wp_die();
 }
 
@@ -752,35 +764,30 @@ add_action('wp_ajax_myfilter', 'misha_filter_function'); // wp_ajax_{ACTION HERE
 add_action('wp_ajax_nopriv_myfilter', 'misha_filter_function');
  
 function misha_filter_function(){
-global $query;
+
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$pag = $_POST['pag'];
 	$args = array(
 		'post_type' => 'tkani',
-		'posts_per_page' => 12,
-		'paged' => $paged,
-		'offset'=> 1
+		'posts_per_page' => 9,
+		'paged' => $pag,
 	);
  
-	// for taxonomies / categories
+
 	if( isset( $_POST['categoryfilter'] ) ){
 		$args['tax_query'] = array(
 			array(
 				'taxonomy' => 'category',
 				'field' => 'id',
 				'terms' => $_POST['categoryfilter'],
-				'relation'=>'AND'
 			)
 		);
 	}else{
-		$args['tax_query'] = array(
-			array(
-				'taxonomy' => 'category',
-				'field' => 'id',
-				'terms' => 'all',
-				'relation'=>'AND',
-				'paged' => get_query_var('paged') ?: 1
-			)
-		);		
+	$args = array(
+		'post_type' => 'tkani',
+		'posts_per_page' => 9,
+		'paged' => $pag,
+	);		
 	}
 
 	if( isset( $_POST['tsvetovaya_gruppa'] )){
@@ -795,32 +802,52 @@ $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			'key' => 'tsvetovaya_gruppa' ,
 			'value'=>$_POST['tsvetovaya_gruppa'],
 		) ;		     
-};
+	};
 
-if( isset( $_POST['dizayn_i_risunok'] )) {	
+	if( isset( $_POST['dizayn_i_risunok'] )) {	
 		$args['meta_query'][] = array ( 
 			'post_type' => 'tkani',
 			'key' => 'dizayn_i_risunok' ,
 			'value'=> $_POST['dizayn_i_risunok'],			
 		) ;		     
-};
+	};
 
-	$query = new WP_Query( $args );
-	if( $query->have_posts() ) :
-		while( $query->have_posts() ): $query->the_post();
-			echo '<div class="col-sm-3 col-lg-3"><div class="tkancontent">';
-			$thumb_id = get_post_thumbnail_id($query->post);
+$tkani = new WP_Query($args);
+ if ($tkani->have_posts()) : while ($tkani->have_posts()) : $tkani->the_post(); 
+			echo '<div class="mycol3"><div class="tkancontent">';
+			$thumb_id = get_post_thumbnail_id($tkani->post);
 			$thumb_url = wp_get_attachment_image_src($thumb_id,'thumbnail-size', true);
-			echo '<div class="img" style="background: url(' . $thumb_url[0] . ');" ><h2>' . $query->post->post_title . '</h2></div>';
-			echo '<div class="inf">' . get_field('dizayn_i_risunok', $query->post) . '</div>';
+			$string = $tkani->post->post_title;
+			$words = explode(" ", $string);
+			$words[0] = substr($words[0], 0, 2);
+			$taitl = implode(" ", $words);
+			echo '<div class="img" style="background: url(' . $thumb_url[0] . ');" ><h2>' . $taitl . '</h2></div>';
+			echo '<div class="inf">' . get_field('dizayn_i_risunok', $tkani->post) . '</div>';
 			echo '</div>';			
 			echo '</div>';
 		endwhile;
-if (function_exists('wp_corenavi')) wp_corenavi(); 
-		wp_reset_postdata();
+		echo '<input type="hidden" id="kl" name="action" value="' . $tkani->found_posts . '">';
+$paginateArgs = array(
+	'base'         => '%_%',
+	'format'       => '/page/%#%',
+	'current' => $pag,
+	'total' => $tkani->max_num_pages,
+ 	'prev_text'    => __(''),
+	'next_text'    => __(''),
+);
+echo '<div class="pgin">';
+echo paginate_links( $paginateArgs );
+echo '</div>';
+echo '<script>$("span#kol").text($("#kl").val()); $("a.page-numbers").click(function(){event.preventDefault(),$("#pag").val($(this).html());var e=$("#filter");return $.ajax({url:e.attr("action"),data:e.serialize(),type:e.attr("method"),beforeSend:function(e){},success:function(e){$("#response").html(e)}}),!1});</script>';
+		wp_reset_query();
 	else :
-		echo 'No posts found';
+		echo '<div style="text-align: center;">Ничего не найдено.</div>';
+		echo '<script>$("span#kol").text("0");</script>';
 	endif;
 	
 	die();
 }
+
+
+
+
